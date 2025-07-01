@@ -1,0 +1,30 @@
+---
+Pourquoi la première commande (avec command) échoue-t-elle ?
+Parce que le module command n’interprète pas les redirections ni les pipes (|, >, etc.)
+
+
+---
+Quel est le rôle du module shell dans le second playbook ?
+Le module shell exécute la commande complète dans un shell Bash (ou équivalent), donc interprète correctement les pipes et les redirections.
+
+
+---
+Dans un environnement de production, lequel utiliser par défaut ? Pourquoi ?
+il est plus sûr
+
+il ne permet pas de faire des pipes, des redirections, ou des expansions
+
+il réduit les risques d’exécution de commandes complexes ou non maîtrisées
+
+
+
+---
+Comment sécuriser un usage du module shell ?
+
+Limiter son usage à des cas strictement nécessaires (ex: script complexe, pipe, redirection)
+
+Valider les entrées utilisateur (ne jamais passer des variables non contrôlées)
+
+Utiliser set -euo pipefail dans les scripts shell
+
+Éviter d’utiliser shell: avec des arguments dynamiques provenant d’inventaires ou de playbooks non vérifiés

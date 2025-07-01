@@ -1,0 +1,9 @@
+- name: Désinstaller Apache2 sur localhost
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Désinstaller le paquet apache2
+      apt:
+        name: apache2
+        state: absent
+        update_cache: yes

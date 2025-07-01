@@ -1,0 +1,10 @@
+- name: Mon playbook complet
+  hosts: localhost
+  tasks:
+    - name: Tester la connectivité
+      ping:
+
+    - name: Afficher Hello World
+      debug:
+        msg: "Hello World"
+

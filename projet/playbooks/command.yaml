@@ -1,0 +1,6 @@
+---
+- name: Tester le module command (échoue à cause du pipe)
+  hosts: client1
+  tasks:
+    - name: Utiliser command pour afficher les lignes contenant "root"
+      ansible.builtin.command: cat /etc/passwd | grep root

@@ -34,6 +34,11 @@ RUN sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid
 # Exposer le port SSH
 EXPOSE 22
 
+# Ajouter la clé publique d’Ansible dans authorized_keys
+RUN mkdir -p /root/.ssh
+COPY authorized_keys /root/.ssh/authorized_keys
+RUN chmod 600 /root/.ssh/authorized_keys
+
 # Lancer SSH en avant-plan pour maintenir le conteneur actif
 #CMD ["/usr/sbin/sshd", "-D"]
 CMD ["/bin/bash", "-c", "ssh-keygen -A && /usr/sbin/sshd -D"]

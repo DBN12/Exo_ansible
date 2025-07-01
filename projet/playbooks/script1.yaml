@@ -1,0 +1,8 @@
+---
+- name: Exécuter le script shell sur client1
+  hosts: client1
+  become: true
+
+  tasks:
+    - name: Exécuter le script /root/script1.sh
+      shell: /root/script1.sh

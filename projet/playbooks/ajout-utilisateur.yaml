@@ -1,0 +1,12 @@
+- name: Créer un utilisateur nommé Pierre sur les clients
+  hosts: all
+  become: true
+  tasks:
+    - name: Ajouter l'utilisateur Pierre
+      ansible.builtin.user:
+        name: pierre
+        comment: "Utilisateur distant Pierre"
+        shell: /bin/bash
+        home: /home/pierre
+        state: present
+        create_home: yes

@@ -1,0 +1,10 @@
+- name: Définir ou modifier le mot de passe de l'utilisateur pierre
+  hosts: all
+  become: true
+  vars_files:
+    - /root/projet/playbooks/secrets.yaml
+  tasks:
+    - name: Mettre à jour le mot de passe de pierre
+      ansible.builtin.user:
+        name: pierre
+        password: "{{ newpass }}"

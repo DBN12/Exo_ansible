@@ -1,0 +1,9 @@
+- name: Déployer la clé SSH sur les clients
+  hosts: all
+  become: true
+  tasks:
+    - name: Copier la clé publique sur les clients
+      ansible.posix.authorized_key:
+        user: root
+        state: present
+        key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
