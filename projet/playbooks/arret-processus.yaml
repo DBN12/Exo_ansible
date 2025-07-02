@@ -1,0 +1,14 @@
+---
+- name: Arrêter le processus "sleep"
+  hosts: client1
+  become: true
+
+  tasks:
+    - name: Récupérer le PID du processus sleep
+      shell: pgrep sleep
+      ignore_errors: true
+      register: process_encours
+
+    - name: Tuer le processus s’il existe
+      shell: kill -9 {{ process_encours.stdout }}
+      when: process_encours.stdout != ""

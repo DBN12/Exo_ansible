@@ -1,0 +1,29 @@
+---
+- name: Mettre à jour index.html et redémarrer Apache si nécessaire
+  hosts: ubuntu
+  become: true
+
+  tasks:
+    - name: Créer le dossier /var/www/html s'il n'existe pas
+      file:
+        path: /var/www/html
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Copier le fichier index.html vers /var/www/html/index.html
+      copy:
+        src: /root/projet/playbooks/index.html
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
+      notify: Redémarrer Apache
+
+  handlers:
+    - name: Redémarrer Apache
+      service:
+        name: apache2
+        state: restarted
+

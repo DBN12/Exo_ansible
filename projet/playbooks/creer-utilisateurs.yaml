@@ -1,0 +1,16 @@
+---
+- name: Créer plusieurs utilisateurs
+  hosts: all
+  become: true
+  vars:
+    utilisateurs:
+      - karim
+      - sarah
+      - louis
+
+  tasks:
+    - name: Créer les comptes utilisateurs
+      user:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ utilisateurs }}"

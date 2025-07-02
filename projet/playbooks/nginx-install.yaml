@@ -1,0 +1,18 @@
+---
+- name: Installer nginx selon le type de système
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Installer nginx avec apt (Debian)
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Installer nginx avec yum (RedHat ou SUSE)
+      yum:
+        name: nginx
+        state: present
+      when: ansible_os_family == "RedHat" or ansible_os_family == "Suse"

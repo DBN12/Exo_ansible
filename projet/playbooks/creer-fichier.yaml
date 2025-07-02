@@ -1,0 +1,14 @@
+---
+- name: Créer dynamiquement un fichier vide sur les clients
+  hosts: all
+  become: true
+
+  vars_files:
+    - /root/projet/vars/fichier_vars.yaml
+
+  tasks:
+    - name: Créer un fichier vide avec le nom dynamique
+      ansible.builtin.file:
+        path: "/tmp/{{ nom_fichier }}.log"
+        state: touch
+        mode: '0644'

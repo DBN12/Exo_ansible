@@ -1,0 +1,5 @@
+fichier_source: /root/sdv.conf
+fichier_destination: /tmp
+proprietaire: root
+groupe: root
+permissions: '0755'

@@ -1,0 +1,8 @@
+---
+- name: Installation package
+  hosts: localhost
+  tasks:
+  - name: Installer package
+    apt:
+     name: “{{ package }}”
+     state: present

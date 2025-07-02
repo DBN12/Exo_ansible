@@ -1,0 +1,9 @@
+- name: installer Apache2 sur localhost
+  hosts: localhost
+  become: true
+  tasks:
+    - name: installer le paquet apache2
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes

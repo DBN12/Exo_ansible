@@ -1,0 +1,17 @@
+---
+- name: Installer Apache uniquement sur les hôtes Debian
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Installer apache2 si OS Debian
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Afficher un message de confirmation
+      debug:
+        msg: "Apache a été installé"
+      when: ansible_os_family == "Debian"

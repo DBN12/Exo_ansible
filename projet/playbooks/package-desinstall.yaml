@@ -1,0 +1,25 @@
+---
+- name: Désinstaller des paquets selon la famille du système
+  hosts: all
+  become: true
+
+  vars:
+    packages:
+      - telnet
+      - curl
+      - wget
+
+  tasks:
+    - name: Désinstaller les paquets avec apt (Debian/Ubuntu)
+      apt:
+        name: "{{ item }}"
+        state: absent
+      loop: "{{ packages }}"
+      when: ansible_os_family == "Debian"
+
+    - name: Désinstaller les paquets avec yum (RedHat/Rocky)
+      yum:
+        name: "{{ item }}"
+        state: absent
+      loop: "{{ packages }}"
+      when: ansible_os_family == "RedHat"

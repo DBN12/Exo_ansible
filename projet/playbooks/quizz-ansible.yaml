@@ -1,0 +1,65 @@
+---
+- name: Déploiement de l'application Node.js quiz-ansible
+  hosts: rocky
+  become: true
+  collections:
+    - community.general
+ 
+  vars:
+    repo_url: "https://github.com/franklin-tutorials/quiz-ansible.git"
+    node_script_url: "https://rpm.nodesource.com/setup_23.x"
+    app_dir: "/opt/quiz-ansible"
+
+  tasks:
+    - name: Mettre à jour les paquets
+      dnf:
+        name: "*"
+        state: latest
+        update_cache: yes
+
+    - name: Installer Git
+      dnf:
+        name: git
+        state: present
+
+    - name: Télécharger le script d'installation Node.js
+      get_url:
+        url: "{{ node_script_url }}"
+        dest: /tmp/node_setup.sh
+        mode: '0755'
+
+    - name: Exécuter le script Node.js
+      command: bash /tmp/node_setup.sh
+
+    - name: Installer Node.js
+      dnf:
+        name: nodejs
+        state: present
+
+    - name: Cloner le dépôt quiz-ansible
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ app_dir }}"
+        version: main
+
+    - name: Installer les dépendances NPM
+      command: npm install
+      args:
+        chdir: "{{ app_dir }}"
+
+    - name: Compiler l'application
+      command: npm run build
+      args:
+        chdir: "{{ app_dir }}"
+
+    - name: Installer 'serve' en global
+      npm:
+        name: serve
+        global: yes
+        state: present
+
+    - name: Lancer l'application en tâche de fond
+      shell: "nohup serve -s dist &"
+      args:
+        chdir: "{{ app_dir }}"
+        creates: "{{ app_dir }}/dist"

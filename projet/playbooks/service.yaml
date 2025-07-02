@@ -1,0 +1,13 @@
+---
+- name: Gérer le service apache2
+  hosts: localhost
+  become: true
+
+  vars:
+    etat_service: "started"
+
+  tasks:
+    - name: S assurer que apache2 est dans l'état souhaité
+      ansible.builtin.service:
+        name: apache2
+        state: "{{ etat_service }}"

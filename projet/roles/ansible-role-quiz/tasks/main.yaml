@@ -1,0 +1,55 @@
+---
+- name: Installer les paquets nécessaires (Debian)
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - git
+    - curl
+  when: ansible_os_family == "Debian"
+
+- name: Installer les paquets nécessaires (RedHat)
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - git
+    - curl
+  when: ansible_os_family == "RedHat"
+
+- name: Installer Node.js (Debian)
+  shell: |
+    curl -fsSL https://deb.nodesource.com/setup_23.x | bash -
+    apt-get install -y nodejs
+  when: ansible_os_family == "Debian"
+
+- name: Installer Node.js (RedHat)
+  shell: |
+    curl -fsSL https://rpm.nodesource.com/setup_23.x | bash -
+    yum install -y nodejs
+  when: ansible_os_family == "RedHat"
+
+- name: Cloner le dépôt quiz-ansible
+  git:
+    repo: https://github.com/franklin-tutorials/quiz-ansible.git
+    dest: /opt/quiz-ansible
+    update: yes
+
+- name: Installer les dépendances Node.js
+  shell: npm install
+  args:
+    chdir: /opt/quiz-ansible
+
+- name: Construire l'application
+  shell: npm run build
+  args:
+    chdir: /opt/quiz-ansible
+
+- name: Installer serve
+  shell: npm install -g serve
+
+- name: Lancer l'application
+  shell: nohup serve -s dist &
+  args:
+    chdir: /opt/quiz-ansible

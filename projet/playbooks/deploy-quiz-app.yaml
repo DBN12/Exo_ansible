@@ -1,0 +1,7 @@
+---
+- name: Déployer l'application quiz-ansible via rôle
+  hosts: all
+  become: true
+
+  roles:
+    - /root/projet/roles/ansible-role-quiz/tasks/main.yaml
